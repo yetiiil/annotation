@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <script src="vdiffjs_20230317/dist/vdiffjs/vdiff.bundle.min.js"></script>
+    <script src="vdiffjs_20230317/dist/opencv/opencv-4.5.1.js"></script>
+    <link rel="stylesheet" href="vdiffjs_20230317/dist/vdiffjs/vdiff.bundle.css">
     <title>Data Annotation for Printing Block Identification</title>
     <style>
         /* CSS styles for the website */
@@ -10,10 +13,26 @@
             padding: 20px;
         }
 
+        h1, h2, h3 {
+            margin-top: 0;
+        }
+
+        h2 {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #1a0dab;
+            text-align: center;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 0 20%;
+        }
+
         #annotation-container {
             border: 1px solid #ccc;
             padding: 20px;
             margin-bottom: 20px;
+            text-align: center;
         }
 
         .annotation {
@@ -26,66 +45,251 @@
             margin-bottom: 5px;
         }
 
-        .annotation input[type="text"],
-        .annotation textarea {
-            width: 100%;
-            padding: 5px;
-            border: 1px solid #ccc;
-            border-radius: 3px;
+        .annotation input[type="radio"],
+        .annotation label {
+            flex: 1;
+        }
+
+        .annotation input[type="submit"] {
+            margin-top: 10px;
         }
 
         .submit-button {
-            background-color: #4CAF50;
+            background-color: #1a0dab;
             color: white;
             padding: 10px 15px;
             border: none;
             border-radius: 3px;
             cursor: pointer;
         }
+
+        #images {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        #images img {
+            margin-right: 10px;
+            max-width: 100%;
+            max-height: 600px;
+        }
+        
+
+        /* Custom checkbox styles */
+        input[type="radio"] {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ccc;
+            border-radius: 50%;
+            outline: none;
+            cursor: pointer;
+            position: relative;
+            margin-right: 5px;
+        }
+
+        input[type="radio"]:checked::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 10px;
+            height: 10px;
+            background-color: #1a0dab;
+            border-radius: 50%;
+        }
+
+        input[type="radio"]:hover {
+            border-color: #999;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 10px;
+            border-top: 1px solid #ccc;
+        }
+
+        footer p {
+            font-size: 14px;
+            color: #666;
+            margin: 0;
+        }
+
     </style>
 </head>
 <body>
     <header>
         <h1>Data Annotation for Printing Block Identification</h1>
     </header>
-    
+
     <main>
         <section>
-            <h2>Annotate Data</h2>
-            <div id="annotation-container">
-                <div class="annotation">
-                    <label for="input1">Attribute 1:</label>
-                    <input type="text" id="input1">
-                </div>
-                <div class="annotation">
-                    <label for="input2">Attribute 2:</label>
-                    <textarea id="input2"></textarea>
-                </div>
-                <!-- Add more annotation fields as needed -->
+            <h2>Image Pairs</h2>
+            <div id="image02">
+                <img id="first-image" src="">
+                <img id="second-image" src="">
             </div>
-            <button class="submit-button" onclick="submitAnnotation()">Submit</button>
+
+            <h3>Annotate Data</h3>
+            <div id="annotation-container">
+                <form onsubmit="return submitAnnotation(event)">
+                    <label>
+                        <input type="radio" name="choice" value="option1">
+                        Yes
+                    </label><br>
+
+                    <label>
+                        <input type="radio" name="choice" value="option2">
+                        No
+                    </label><br>
+
+                    <label>
+                        <input type="radio" name="choice" value="option3">
+                        Not sure
+                    </label><br>
+
+                    <input type="submit" class="submit-button" value="Submit">
+                </form>
+            </div>
         </section>
     </main>
-    
+
     <footer>
         <p>© 2023 Data Annotation Website. All rights reserved.</p>
     </footer>
 
     <script>
-        // JavaScript code for submitting annotation data
-        function submitAnnotation() {
-            // Get values from input fields
-            var input1Value = document.getElementById('input1').value;
-            var input2Value = document.getElementById('input2').value;
-            
-            // Perform actions with the annotation data, such as saving it or sending it to a server
-            
-            // Reset input fields after submission
-            document.getElementById('input1').value = '';
-            document.getElementById('input2').value = '';
-            
-            // Display a success message or perform any other necessary actions
-            alert('Annotation submitted successfully!');
+        // Modify the JSON file path accordingly
+        var jsonFilePath = "compare/image_files.json";
+        var folderPath = "compare/";
+
+        var imagePairs = []; // Array to store image pairs
+        var currentPairIndex = 0;
+        var firstImage = document.getElementById('first-image');
+        var secondImage = document.getElementById('second-image');
+
+        // Fetch image pairs from the JSON file
+        fetch(jsonFilePath)
+            .then(response => response.json())
+            .then(data => {
+                const imageFiles = data.image_files;
+
+                // Generate image pairs
+                for (var i = 0; i < imageFiles.length - 1; i += 2) {
+                    var pair = {
+                        firstImage: folderPath + imageFiles[i],
+                        secondImage: folderPath + imageFiles[i + 1]
+                    };
+                    imagePairs.push(pair);
+                }
+
+                // Print the imagePairs array
+                console.log("Image Pairs:", imagePairs);
+
+                // Display initial image pair
+                updateImagePair();
+            })
+            .catch(error => console.log("Error fetching image pairs:", error));
+
+        // Function to update the image pair
+        function updateImagePair() {
+            var pair = imagePairs[currentPairIndex];
+            firstImage.src = pair.firstImage;
+            secondImage.src = pair.secondImage;
+            initializeVDiff(pair);
+        }
+
+        // Initialize VDiff with the given image pair
+        function initializeVDiff(pair) {
+            var image02Container = document.getElementById("image02");
+            image02Container.innerHTML = ""; // Clear the container
+
+            var vdiffContainer = document.createElement("div");
+            vdiffContainer.id = "vdiff-container";
+            image02Container.appendChild(vdiffContainer);
+
+            var vdiffData = {
+                img1: pair.firstImage,
+                img2: pair.secondImage,
+                img1_roi_xywh: "percent:50,25,50,50"
+            };
+
+            VDiff({
+                id: "vdiff-container",
+                data: vdiffData
+            });
+        }
+
+        // Array to store annotation data
+        var annotationData = [];
+
+        // Function to submit annotation data
+        function submitAnnotation(event) {
+            event.preventDefault();
+
+            var selectedChoice = document.querySelector('input[name="choice"]:checked');
+
+            if (selectedChoice) {
+                var choiceValue = selectedChoice.value;
+                console.log("Selected choice:", choiceValue);
+
+                // Save the annotation data
+                saveAnnotationData(choiceValue);
+
+                selectedChoice.checked = false;
+
+                currentPairIndex = (currentPairIndex + 1) % imagePairs.length;
+                updateImagePair();
+            } else {
+                console.log("Please select a choice.");
+            }
+
+            return false;
+        }
+
+        // Function to save annotation data
+        function saveAnnotationData(choiceValue) {
+            // Create an object to represent the annotation data
+            var annotation = {
+                firstImage: imagePairs[currentPairIndex].firstImage,
+                secondImage: imagePairs[currentPairIndex].secondImage,
+                choice: choiceValue
+            };
+
+            // Add the annotation to the annotationData array
+            annotationData.push(annotation);
+
+            // Save the annotation data to the server
+            saveAnnotationDataToServer(annotationData);
+        }
+
+        // Function to save annotation data to the server
+        function saveAnnotationDataToServer(data) {
+            // Convert the annotation data to JSON
+            var jsonData = JSON.stringify(data);
+
+            // Send the JSON data to a server using AJAX, fetch, or any other method
+            // Example: save the JSON data to a server endpoint
+            fetch('save_annotation.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: jsonData
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log("Annotation data saved successfully.");
+                } else {
+                    throw new Error("Error saving annotation data.");
+                }
+            })
+            .catch(error => console.log("Error saving annotation data:", error));
         }
     </script>
 </body>

@@ -1,0 +1,23 @@
+@charset "UTF-8";
+/*
+ * vdiff.js - JavaScript-based visual differencing tool
+ * http://codh.rois.ac.jp/software/vdiffjs/
+ *
+ * Copyright 2021 Center for Open Data in the Humanities, Research Organization of Information and Systems
+ * Released under the MIT license
+ *
+ * Core contributor: Jun HOMMA (@2SC1815J)
+ *
+ * Licenses of open source libraries, see acknowledgements.md
+ */
+.vdiffjs-container,
+.vdiffjs-container *,
+.vdiffjs-editor-container,
+.vdiffjs-editor-container *,
+div.hct,
+#hpt {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  line-height: normal;
+}

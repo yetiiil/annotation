@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="vdiffjs/vdiff.bundle.css">
+    <link rel="stylesheet" href="vdiffjs-wrapper.css">
+    <title>vdiff.js / vdiff.js editor - JavaScript-based visual differencing tool</title>
+    <script src="vdiffjs/vdiff.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/spin.js@2.3.2/spin.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/spin.js@2.3.2/jquery.spin.min.js"></script>
+  </head>
+  <body>
+    <div id="vdiffjs_wrapper"></div>
+    <script src="vdiffjs-wrapper.js"></script>
+    <script>
+      (function() {
+        VDiffWrapper({
+          id: 'vdiffjs_wrapper',
+          enableAnnotator: true,
+          fileMode: true
+        });
+      })();
+    </script>
+    <script src="opencv/opencv-4.5.1.js" async></script>
+  </body>
+</html>

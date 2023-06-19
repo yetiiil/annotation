@@ -1,0 +1,23 @@
+div.hct {
+    background: url("greybutton.png");
+    position: absolute;
+    width: 48px;
+    height: 34px;
+    /*font-size: 10px;*/
+    text-align: center;
+    padding-top: 14px;
+    display: none;
+    cursor: pointer;
+    z-index: 99999;
+}
+div.hct:hover {
+    background-image: url("greyhighlight.png");
+}
+#hpt {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    display: none;
+    background: 000;
+    opacity: 0;
+}

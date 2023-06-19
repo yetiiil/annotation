@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="vdiffjs/reset.css">
+    <link rel="stylesheet" href="jquery/jquery.images-compare/images-compare.min.css">
+    <link rel="stylesheet" href="jquery/jquery.halocontext/jquery.halocontext.css">
+    <link rel="stylesheet" href="jquery-ui/jquery-ui.min.css">
+    <link rel="stylesheet" href="fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="annotorious/annotorious.min.css">
+    <link rel="stylesheet" href="vdiffjs/diff.css">
+    <title>vdiff.js</title>
+    <script src="hammer/hammer.min.js"></script>
+    <script src="jquery/jquery/jquery-3.6.0.min.js"></script>
+    <script src="jquery/jquery.images-compare/jquery.images-compare.min.js"></script>
+    <script src="jquery/jquery.halocontext/jquery.halocontext.js"></script>
+    <script src="jquery-ui/jquery-ui.min.js"></script>
+    <script src="annotorious/annotorious.min.js"></script>
+    <script src="vdiffjs/pre-opencv.js"></script>
+    <script src="vdiffjs/diff.js"></script>
+  </head>
+  <body>
+    <div id="vdiff_viewer"></div>
+    <script>
+      (function() {
+        VDiff({
+          id: 'vdiff_viewer'
+        });
+      })();
+    </script>
+    <script src="opencv/opencv-4.5.1.js" async></script>
+</body>
+</html>

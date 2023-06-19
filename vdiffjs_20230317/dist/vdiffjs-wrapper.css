@@ -1,0 +1,72 @@
+@charset "UTF-8";
+/*
+ * vdiff.js - JavaScript-based visual differencing tool
+ * http://codh.rois.ac.jp/software/vdiffjs/
+ *
+ * Copyright 2021 Center for Open Data in the Humanities, Research Organization of Information and Systems
+ * Released under the MIT license
+ *
+ * Core contributor: Jun HOMMA (@2SC1815J)
+ *
+ * Licenses of open source libraries, see acknowledgements.md
+ */
+.vdiffjs-wrapper-container {
+  overflow-x: auto;
+  margin-bottom: 5px;
+}
+.vdiffjs-form-container .form-url {
+  width: 50%;
+  margin: 5px 5px 5px 0;
+}
+.vdiffjs-form-container .form-label {
+  width: 30%;
+  margin: 5px 0;
+}
+.vdiffjs-form-container .form-submit {
+  margin-top: 5px;
+}
+
+.vdiffjs-form-container input {
+  background: white;
+  text-align: left;
+  outline: none;
+  cursor: text;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
+.vdiffjs-form-container input:hover,
+.vdiffjs-form-container input:active {
+  background: inherit;
+  color: inherit;
+}
+.vdiffjs-form-container input:focus {
+  background: inherit;
+  border-color: #66afe9;
+  box-shadow: 0px 0px 2px 1px rgba(102,175,233,.6);
+}
+.vdiffjs-form-container button:focus {
+  background: #ddd;
+  color: inherit;
+  border: 1px solid #ccc;
+}
+
+.vdiffjs-form-container-local .local-form-file {
+  margin-top: 10px;
+}
+.vdiffjs-form-container-local .local-form-file div input {
+  margin-top: 5px;
+  margin-left: 16px;
+  display: block;
+}
+.vdiffjs-form-container-local .local-form-file .form-label {
+  margin: 5px 0 0 16px;
+}
+.vdiffjs-form-container-local .form-submit {
+  margin-top: 20px;
+}
+
+.vdiffjs-form-container > form {
+  margin-top: 10px;
+}

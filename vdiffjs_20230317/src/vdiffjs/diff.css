@@ -1,0 +1,291 @@
+@charset "UTF-8";
+/*
+ * vdiff.js - JavaScript-based visual differencing tool
+ * http://codh.rois.ac.jp/software/vdiffjs/
+ *
+ * Copyright 2021 Center for Open Data in the Humanities, Research Organization of Information and Systems
+ * Released under the MIT license
+ *
+ * Core contributor: Jun HOMMA (@2SC1815J)
+ *
+ * Licenses of open source libraries, see acknowledgements.md
+ */
+/* core settings */
+.vdiffjs-container {
+  position: static;
+  box-sizing: content-box;
+  text-align: left;
+}
+.vdiffjs-container * {
+  box-sizing: content-box;
+}
+.vdiffjs-container canvas {
+  vertical-align: middle;
+}
+.vdiffjs-container .clearfix::after {
+  clear: both;
+  content: "";
+  display: block;
+}
+.vdiffjs-container > .toolbar-container {
+  padding: 5px 0;
+}
+.vdiffjs-container > .toolbar-container > .compare-methods-selecter-container {
+  display: inline-block;
+}
+.vdiffjs-container > .toolbar-container > .compare-methods-selecter-container > .ui-button {
+  margin-right: -1px;
+}
+.vdiffjs-container > .toolbar-container > .compare-methods-selecter-container > .ui-visual-focus {
+  box-shadow: none;
+}
+.vdiffjs-container > .toolbar-container > .compare-methods-selecter-container > .compare-methods-additional-setting-container {
+  display: inline-block;
+  padding-right: 5px;
+  padding-left: 5px;
+}
+.vdiffjs-container > .toolbar-container.top > .compare-methods-selecter-container > .compare-methods-additional-setting-container {
+  vertical-align: middle;
+}
+.vdiffjs-container > .toolbar-container.bottom > .compare-methods-selecter-container > .compare-methods-additional-setting-container {
+  vertical-align: middle;
+}
+.vdiffjs-container > .toolbar-container > .compare-methods-selecter-container > .compare-methods-additional-setting-container > input[type="checkbox"] {
+  margin: 3px 3px 3px 4px;
+  vertical-align: middle;
+}
+.vdiffjs-container > .toolbar-container > .compare-methods-selecter-container > .compare-methods-additional-setting-container > input[type="range"] {
+  margin: 0 2px;
+  vertical-align: middle;
+}
+.vdiffjs-container > .toolbar-container > .buttons-container {
+  display: inline-block;
+  margin-left: 1em;
+}
+.vdiffjs-container > .toolbar-container.top > .buttons-container {
+  vertical-align: bottom;
+}
+.vdiffjs-container > .toolbar-container.bottom > .buttons-container {
+  vertical-align: middle;
+}
+.vdiffjs-container > .toolbar-container > .buttons-container > .ui-button {
+  margin-right: 1px;
+}
+.vdiffjs-container > .toolbar-container > .buttons-container > .ui-visual-focus {
+  box-shadow: none;
+}
+
+.vdiffjs-container > .images-compare-container {
+  vertical-align: middle;
+}
+.vdiffjs-container > .images-compare-container > canvas {
+  position: absolute;
+  z-index: 10;
+}
+.vdiffjs-container > .images-compare-container > .images-compare-separator {
+  z-index: 11;
+}
+.vdiffjs-container > .images-compare-container > .images-compare-handle {
+  z-index: 12;
+}
+.vdiffjs-container > .images-compare-container > .images-compare-before img,
+.vdiffjs-container > .images-compare-container > .images-compare-after img {
+  max-width: inherit;
+}
+.vdiffjs-container > .dissolve-container {
+  position: relative;
+}
+
+.vdiffjs-container > .legend-container {
+  font-size: 0.75em;
+  padding: 5px 0;
+  margin: 0;
+  width: 100%;
+  display: flex;
+}
+.vdiffjs-container > .legend-container .left-block {
+  width: 50%;
+  text-align: left;
+  float: left;
+  display: flex;
+}
+.vdiffjs-container > .legend-container .right-block {
+  width: 50%;
+  text-align: right;
+  float: right;
+  display: flex;
+}
+.vdiffjs-container > .legend-container .left-marker {
+  padding: 0 3px;
+  margin: 0 3px 0 0;
+  flex-shrink: 0;
+}
+.vdiffjs-container > .legend-container .right-marker {
+  padding: 0 3px;
+  margin: 0 0 0 3px;
+  flex-shrink: 0;
+}
+.vdiffjs-container > .legend-container .left-label {
+  padding: 0 1em 0 0;
+}
+.vdiffjs-container > .legend-container .right-label {
+  padding: 0 0 0 1em;
+  flex-grow: 1;
+}
+.vdiffjs-container > .legend-container .legend-blue {
+  background-color: rgba(0, 0, 255, 0.5);
+  color: white;
+}
+.vdiffjs-container > .legend-container .legend-red {
+  background-color: rgba(255, 0, 0, 0.5);
+  color: white;
+}
+.vdiffjs-container > .legend-container .legend-gray {
+  background-color: rgba(221, 221, 221, 0.5);
+  color: black;
+}
+.vdiffjs-container > .annotation-marker {
+  position: absolute;
+}
+.vdiffjs-container > .annotation-tooltip {
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0.5);
+  font-size: 14px;
+}
+.vdiffjs-container > .annotation-tooltip > div {
+  border: 1px solid rgba(127, 127, 127, 0.5);
+  padding: 5px;
+}
+.vdiffjs-container > .annotation-popup-container {
+  font-size: 12px;
+}
+.vdiffjs-container.vdiffjs-global-compare-mode > .annotation-marker {
+  z-index: 10000;
+}
+.vdiffjs-container.vdiffjs-global-compare-mode > .annotation-tooltip {
+  z-index: 10001;
+}
+.vdiffjs-container.vdiffjs-global-compare-mode > .annotation-annotorious-container {
+  z-index: 10000;
+}
+
+.hct {
+  box-sizing: content-box; /* need if used with Bootstrap */
+  font-family: sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+/* popup from Leaflet
+ * BSD 2-Clause License
+ * Copyright (c) 2010-2022, Vladimir Agafonkin
+ * Copyright (c) 2010-2011, CloudMade
+ */ 
+.vdiffjs-container .leaflet-popup {
+  position: absolute;
+  text-align: center;
+  margin-bottom: 20px;
+}
+.vdiffjs-container .leaflet-popup-content-wrapper {
+  padding: 1px;
+  text-align: left;
+  border-radius: 12px;
+}
+.vdiffjs-container .leaflet-popup-content {
+  margin: 13px 24px 13px 20px;
+  line-height: 1.3;
+  font-size: 13px;
+  font-size: 1.08333em;
+  min-height: 1px;
+}
+.vdiffjs-container .leaflet-popup-content p {
+  margin: 17px 0;
+  margin: 1.3em 0;
+}
+.vdiffjs-container .leaflet-popup-tip-container {
+  width: 40px;
+  height: 20px;
+  position: absolute;
+  left: 50%;
+  margin-top: -1px;
+  margin-left: -20px;
+  overflow: hidden;
+  pointer-events: none;
+}
+.vdiffjs-container .leaflet-popup-tip {
+  width: 17px;
+  height: 17px;
+  padding: 1px;
+
+  margin: -10px auto 0;
+  pointer-events: auto;
+
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+.vdiffjs-container .leaflet-popup-content-wrapper,
+.vdiffjs-container .leaflet-popup-tip {
+  background: white;
+  color: #333;
+  box-shadow: 0 3px 14px rgba(0, 0, 0, 0.4);
+}
+.vdiffjs-container a.leaflet-popup-close-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  border: none;
+  text-align: center;
+  width: 24px;
+  height: 24px;
+  font: 16px/24px Tahoma, Verdana, sans-serif;
+  color: #757575;
+  text-decoration: none;
+  background: transparent;
+}
+.vdiffjs-container a.leaflet-popup-close-button:hover,
+.vdiffjs-container a.leaflet-popup-close-button:focus {
+  color: #585858;
+}
+.vdiffjs-container .leaflet-popup-scrolled {
+  overflow: auto;
+}
+
+/* optional (design elements settings) */
+.vdiffjs-container > .images-compare-container > .images-compare-handle {
+  top: calc(100% - 26px);
+  background: none;
+  border: 3px solid transparent;
+  box-shadow: none;
+}
+.vdiffjs-container > .images-compare-container > .images-compare-handle > .images-compare-left-arrow,
+.vdiffjs-container > .images-compare-container > .images-compare-handle > .images-compare-right-arrow {
+  border: 11px inset transparent;
+  background-position: center;
+  background-repeat: no-repeat;
+  margin-top: -10px;
+}
+.vdiffjs-container > .images-compare-container > .images-compare-handle > .images-compare-left-arrow {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%20%3Cpath%20d%3D%22M%200%2C0%20l%200%2C-9%20l%209%2C9%20l%20-9%2C0%20z%22%20fill%3D%22%23fff%22%20stroke%3D%22%23999%22%20transform%3D%22translate(1%2C9)%20rotate(45)%22%2F%3E%3C%2Fsvg%3E");
+  margin-left: -13px;
+}
+.vdiffjs-container > .images-compare-container > .images-compare-handle > .images-compare-right-arrow {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%20%3Cpath%20d%3D%22M%200%2C0%20l%200%2C-9%20l%209%2C9%20l%20-9%2C0%20z%22%20fill%3D%22%23fff%22%20stroke%3D%22%23999%22%20transform%3D%22translate(8%2C9)%20rotate(225)%22%2F%3E%3C%2Fsvg%3E");
+  margin-right: -25px;
+}
+.vdiffjs-container > .images-compare-container > .images-compare-handle:hover > .images-compare-left-arrow {
+  left: 45%;
+}
+.vdiffjs-container > .images-compare-container > .images-compare-handle:hover > .images-compare-right-arrow {
+  right: 45%;
+}
+.vdiffjs-container > .images-compare-container .images-compare-label {
+  top: unset;
+  bottom: 10px;
+  font-size: 14px;
+  font-weight: normal;
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  text-transform: none;
+}

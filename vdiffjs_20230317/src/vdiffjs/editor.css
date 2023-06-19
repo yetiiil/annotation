@@ -1,0 +1,109 @@
+@charset "UTF-8";
+/*
+ * vdiff.js - JavaScript-based visual differencing tool
+ * http://codh.rois.ac.jp/software/vdiffjs/
+ *
+ * Copyright 2021 Center for Open Data in the Humanities, Research Organization of Information and Systems
+ * Released under the MIT license
+ *
+ * Core contributor: Jun HOMMA (@2SC1815J)
+ *
+ * Licenses of open source libraries, see acknowledgements.md
+ */
+/* core settings */
+.vdiffjs-editor-container {
+  display: flow-root;
+  position: static;
+  box-sizing: content-box;
+  text-align: left;
+}
+.vdiffjs-editor-container * {
+  box-sizing: content-box;
+}
+.vdiffjs-editor-container .preview-header {
+  margin-top: 12px;
+  margin-bottom: 12px;
+  line-height: 1.2;
+}
+.vdiffjs-editor-container .preview-header-link {
+  line-height: 1.2;
+}
+.vdiffjs-editor-container .preview-header-link a {
+  line-height: 1.2;
+}
+.vdiffjs-editor-container .preview-dissolve {
+  max-width: 100%;
+}
+.vdiffjs-editor-container .edit-header {
+  margin-top: 12px;
+  margin-bottom: 12px;
+  line-height: 1.2;
+}
+.vdiffjs-editor-container .edit-leaflet-container {
+  width: 100%;
+  border-spacing: 0;
+}
+.vdiffjs-editor-container .edit-leaflet {
+  height: 480px;
+}
+.vdiffjs-editor-container .edit-leaflet-left {
+  width: 50%;
+  padding: 0 2px 0 0;
+}
+.vdiffjs-editor-container .edit-leaflet-right {
+  width: 49%;
+  padding: 0 0 0 2px;
+}
+.vdiffjs-editor-container .edit-leaflet-marker:focus {
+  box-shadow: 0 0 4px 2px #f66;
+  border-radius: 8px;
+}
+.vdiffjs-editor-container .edit-legend {
+  font-size: 0.75em;
+}
+.vdiffjs-editor-container .edit-legend-left,
+.vdiffjs-editor-container .edit-legend-right {
+  padding: 5px 0 0 0;
+  text-align: center;
+}
+.vdiffjs-editor-container .edit-buttons-container {
+  margin-top: 12px;
+  margin-bottom: 12px;
+  font-size: 0.875em;
+}
+.vdiffjs-editor-container .edit-buttons-container .ui-button {
+  margin-right: 1px;
+}
+.vdiffjs-editor-container .edit-buttons-delete-param {
+  margin-left: 1em;
+}
+.vdiffjs-editor-container .left-block {
+  float: left;
+}
+.vdiffjs-editor-container .right-block {
+  float: right;
+}
+.vdiffjs-editor-container .clearfix::after {
+  clear: both;
+  content: "";
+  display: block;
+}
+
+/* horizontal layout */
+.vdiffjs-editor-container.horizontal {
+  display: flex;
+}
+.vdiffjs-editor-container.horizontal .preview-container {
+  width: 40%;
+  margin-right: 5px;
+  padding-right: 11px;
+  overflow: hidden;
+}
+.vdiffjs-editor-container.horizontal .preview-container > .ui-resizable-e {
+  width: 6px;
+  right: 0;
+  background: url("data:image/svg+xml;charset=utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%226%22%20height%3D%2230%22%3E%3Cpath%20style%3D%22stroke%3A%23666%3B%22%20d%3D%22M1.5%200v30M3.5%200v30M5.5%200v30%22%2F%3E%3C%2Fsvg%3E") center center no-repeat;
+}
+.vdiffjs-editor-container.horizontal .edit-container {
+  flex-grow: 1;
+}
